@@ -18,6 +18,7 @@
       --border-color: #0d386b;
       --success: #10B981;
       --warning: #F59E0B;
+      --purple: #A855F7;
       --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -142,6 +143,7 @@
     .kpi-sub.green { color: #34D399; }
     .kpi-sub.orange { color: var(--accent-orange); }
     .kpi-sub.blue { color: var(--accent-blue); }
+    .kpi-sub.purple { color: #C084FC; }
 
     .tabs {
       display: flex;
@@ -205,6 +207,7 @@
     .badge-orange { background: rgba(251, 140, 15, 0.2); color: var(--accent-orange); border: 1px solid var(--accent-orange); }
     .badge-green { background: rgba(16, 185, 129, 0.2); color: #34D399; border: 1px solid #10B981; }
     .badge-blue { background: rgba(1, 135, 253, 0.2); color: #60A5FA; border: 1px solid var(--accent-blue); }
+    .badge-purple { background: rgba(168, 85, 247, 0.2); color: #C084FC; border: 1px solid var(--purple); }
 
     table {
       width: 100%;
@@ -240,6 +243,29 @@
     .offer-name { font-weight: 700; font-size: 16px; }
     .offer-price { font-size: 20px; font-weight: 800; color: var(--accent-orange); }
     .offer-desc { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+
+    .category-filter {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .filter-btn {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      padding: 6px 14px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .filter-btn:hover, .filter-btn.active {
+      background: var(--accent-orange);
+      color: #fff;
+      border-color: var(--accent-orange);
+    }
 
     .progress-bar-bg {
       background: rgba(255, 255, 255, 0.1);
@@ -292,19 +318,19 @@
         <div class="kpi-sub green">✓ 100 % Traités & Intégrés CRM</div>
       </div>
       <div class="kpi-card">
-        <div class="kpi-label">Sourcing BOOK & Lieux</div>
+        <div class="kpi-label">Sourcing BOOK (Artistes & Lieux)</div>
         <div class="kpi-value">187</div>
-        <div class="kpi-sub blue">+8 nouveaux lieux vérifiés</div>
+        <div class="kpi-sub purple">Vivier Talents & Scènes Référencés</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Prestataires & Partenaires</div>
+        <div class="kpi-value">42</div>
+        <div class="kpi-sub blue">Technique, Chapiteaux, Traiteurs</div>
       </div>
       <div class="kpi-card">
         <div class="kpi-label">LinkedIn (Décideurs 03)</div>
         <div class="kpi-value">4 / 8</div>
         <div class="kpi-sub orange">Invitations actives en cours</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-label">Vigie Retours Gmail</div>
-        <div class="kpi-value">2</div>
-        <div class="kpi-sub green">Signaux chauds (Gannat, Grand Mess)</div>
       </div>
       <div class="kpi-card">
         <div class="kpi-label">Routines Actives</div>
@@ -315,15 +341,153 @@
 
     <!-- TABS -->
     <div class="tabs">
-      <button class="tab-btn active" onclick="openTab('tab-pipeline')">🎯 Pipeline & Offres 2027</button>
+      <button class="tab-btn active" onclick="openTab('tab-book')">🎭 Sourcing Artistes & Prestataires</button>
+      <button class="tab-btn" onclick="openTab('tab-pipeline')">🎯 Pipeline & Offres 2027</button>
       <button class="tab-btn" onclick="openTab('tab-passerelle')">📊 Passerelle Sourcing (Sheets)</button>
       <button class="tab-btn" onclick="openTab('tab-prescripteurs')">🏰 Réseau Prescripteurs & Lieux</button>
-      <button class="tab-btn" onclick="openTab('tab-growth')">🚀 Moteur TOP GROWTH & Contenus</button>
+      <button class="tab-btn" onclick="openTab('tab-growth')">🚀 Moteur TOP GROWTH</button>
       <button class="tab-btn" onclick="openTab('tab-routines')">⚙️ Statut des Automatisations</button>
     </div>
 
+    <!-- TAB 0: SOURCING ARTISTES & PRESTATAIRES (NEW TAB) -->
+    <div id="tab-book" class="tab-content active">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">
+            <span>Catalogue BOOK V3.0 (Vivier Talents & Compagnies)</span>
+            <span class="badge badge-purple">187 Fiches Vérifiées</span>
+          </div>
+          <div class="category-filter">
+            <button class="filter-btn active" onclick="filterBook('all')">Tous</button>
+            <button class="filter-btn" onclick="filterBook('musique')">🎵 Musique & Live</button>
+            <button class="filter-btn" onclick="filterBook('magie')">🎩 Magie / Mentalisme</button>
+            <button class="filter-btn" onclick="filterBook('famille')">🎪 Jeune Public & Familles</button>
+            <button class="filter-btn" onclick="filterBook('visuel')">🎭 Cirque & Rue</button>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Artiste / Compagnie</th>
+                <th>Discipline</th>
+                <th>Format Cible</th>
+                <th>Validation</th>
+              </tr>
+            </thead>
+            <tbody id="book-table-body">
+              <tr data-cat="famille">
+                <td><strong>Cie Lilou</strong> (Montluçon)</td>
+                <td>Spectacle Jeune Public / Contes</td>
+                <td>Arbres de Noël CSE / Écoles</td>
+                <td><span class="badge badge-green">VÉRIFIÉ TOP</span></td>
+              </tr>
+              <tr data-cat="magie">
+                <td><strong>Maverick</strong></td>
+                <td>Magie Close-up & Mentalisme</td>
+                <td>Cocktails B2B / Galas / Soirées</td>
+                <td><span class="badge badge-green">VÉRIFIÉ TOP</span></td>
+              </tr>
+              <tr data-cat="musique">
+                <td><strong>Batucatag</strong></td>
+                <td>Percussions Brésiliennes Live</td>
+                <td>Festivals / Déambulations / Rues</td>
+                <td><span class="badge badge-green">VÉRIFIÉ TOP</span></td>
+              </tr>
+              <tr data-cat="musique">
+                <td><strong>The Black Charts</strong></td>
+                <td>Groupe Live Pop / Rock / Variété</td>
+                <td>Soirées d'entreprises / Soirée dansante</td>
+                <td><span class="badge badge-green">VÉRIFIÉ TOP</span></td>
+              </tr>
+              <tr data-cat="musique">
+                <td><strong>2etDemi</strong></td>
+                <td>Duo Acoustique Jazz / Lounge</td>
+                <td>Cocktails séminaires / Domaines</td>
+                <td><span class="badge badge-green">VÉRIFIÉ TOP</span></td>
+              </tr>
+              <tr data-cat="famille">
+                <td><strong>Cie Euphoric Mouvance</strong></td>
+                <td>Théâtre festif & Visuel</td>
+                <td>Fêtes de fin d'année / Collectivités</td>
+                <td><span class="badge badge-blue">RÉPERTOIRE</span></td>
+              </tr>
+              <tr data-cat="visuel">
+                <td><strong>Artistes Circassiens (Tissu / Échasses)</strong></td>
+                <td>Arts de Rue & Voltige Aérienne</td>
+                <td>Galas d'entreprises / Marchés majeurs</td>
+                <td><span class="badge badge-green">VÉRIFIÉ TOP</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <span>Cartographie Prestataires Techniques & Logistiques</span>
+            <span class="badge badge-blue">Réseau Opérationnel</span>
+          </div>
+          <div class="offer-box">
+            <div>
+              <div class="offer-name">Son & Éclairage de Forte Puissance</div>
+              <div class="offer-desc">Régies festivalières, scènes couvertes, éclairage architectural LED sur batterie (Auvergne Son et Lumière & partenaires).</div>
+            </div>
+            <div class="badge badge-green">OPÉRATIONNEL</div>
+          </div>
+          <div class="offer-box">
+            <div>
+              <div class="offer-name">Structures & Châteaux Gonflables</div>
+              <div class="offer-desc">Parcs de jeux homologués, jeux géants traditionnels en bois, mascottes (Illusion Loc / Foucat Vincent).</div>
+            </div>
+            <div class="badge badge-green">CONVENTIONNÉ</div>
+          </div>
+          <div class="offer-box">
+            <div>
+              <div class="offer-name">Grands Traiteurs Réceptifs</div>
+              <div class="offer-desc">Saveurs des Marais (18), STB Saint-Victor (03), SARL La Romaine (18) — Prescription croisée mariages & B2B.</div>
+            </div>
+            <div class="badge badge-orange">PRESCRIPTION</div>
+          </div>
+          <div class="offer-box">
+            <div>
+              <div class="offer-name">Sécurité ERP & Barriérage</div>
+              <div class="offer-desc">Agents agréés CNAPS, filtrage, barrières Vauban / Heras, conformité réglementaire commission de sécurité.</div>
+            </div>
+            <div class="badge badge-blue">HOMOLOGUÉ</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BOOK PRICING ARCHITECTURE -->
+      <div class="card">
+        <div class="card-title">
+          <span>La Grille Tarifaire Officielle TOP BOOKING (Médiation & Régie Artistes)</span>
+          <span class="badge badge-orange">Grille Officielle 2026</span>
+        </div>
+        <div class="grid-2">
+          <div class="offer-box">
+            <div>
+              <div class="offer-name">Formule SÉLECTION</div>
+              <div class="offer-desc">Recherche, sélection ciblée et mise en relation qualifiée avec l'artiste / compagnie.</div>
+            </div>
+            <div class="offer-price">150 € <span style="font-size: 13px; color: var(--text-muted); font-weight: 500;">+ 10 %</span></div>
+          </div>
+          <div class="offer-box">
+            <div>
+              <div class="offer-name">Formule GESTION</div>
+              <div class="offer-desc">Prise en charge intégrale : contrats GUSO / cession, fiches techniques, catering et coordination amont.</div>
+            </div>
+            <div class="offer-price">300 € <span style="font-size: 13px; color: var(--text-muted); font-weight: 500;">+ 10 %</span></div>
+          </div>
+        </div>
+        <div style="font-size: 13px; color: var(--text-muted); margin-top: 10px;">
+          * Option Présence Terrain / Régisseur Artiste le jour J : <strong>350 € net / jour / coordinateur</strong>.<br>
+          * Commission agence standard : <strong>10 % du devis complet HT du prestataire engagé</strong> (cachet, transport, son/lumière).<br>
+          * Déplacements : <strong>0,65 €/km A/R depuis Montluçon</strong> + frais réels hébergement/repas.
+        </div>
+      </div>
+    </div>
+
     <!-- TAB 1: PIPELINE -->
-    <div id="tab-pipeline" class="tab-content active">
+    <div id="tab-pipeline" class="tab-content">
       <div class="grid-2">
         <div class="card">
           <div class="card-title">
@@ -653,6 +817,19 @@
       document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
       document.getElementById(tabId).classList.add('active');
       event.currentTarget.classList.add('active');
+    }
+
+    function filterBook(cat) {
+      document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+      event.currentTarget.classList.add('active');
+      const rows = document.querySelectorAll('#book-table-body tr');
+      rows.forEach(row => {
+        if (cat === 'all' || row.getAttribute('data-cat') === cat) {
+          row.style.display = '';
+        } else {
+          row.style.display = 'none';
+        }
+      });
     }
   </script>
 </body>
